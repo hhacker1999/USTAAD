@@ -12,7 +12,7 @@ class ValidationBloc {
   final BehaviorSubject<String> _passwordSubject = BehaviorSubject<String>();
   final BehaviorSubject<String> _confirmPasswordSubject =
       BehaviorSubject<String>();
-
+  final BehaviorSubject<bool> _shouldValidate = BehaviorSubject.seeded(false);
   //Inputs
   Function(String) get emailChanged => _emailSubject.add;
   Function(String) get passwordChanged => _passwordSubject.add;
@@ -25,6 +25,8 @@ class ValidationBloc {
       _passwordSubject.transform(_passwordTransformer());
   ValueStream<String> get confirmPasswordStream =>
       _confirmPasswordSubject.transform(_confirmPasswordTransformer());
+  ValueStream<bool> get validationStream => _shouldValidate;
+
   //StreamTransformers
   StreamTransformer _emailTransformer() {
     return StreamTransformer<String, String>.fromHandlers(
@@ -56,10 +58,16 @@ class ValidationBloc {
     });
   }
 
+  //Methods
+  void updateValidationStatus() {
+    _shouldValidate.add(_shouldValidate.value ? false : true);
+  }
+
   //Dispose
   void dispose() {
     _emailSubject.close();
     _passwordSubject.close();
+    _shouldValidate.close();
     _confirmPasswordSubject.close();
   }
 }

@@ -4,35 +4,46 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          StreamBuilder<String>(
-            stream: Provider.of<ValidationBloc>(context).emailStream,
-            builder: (_, snap) => TextField(
-              onChanged: Provider.of<ValidationBloc>(context).emailChanged,
-              decoration: InputDecoration(errorText: snap.error),
-            ),
-          ),
-          StreamBuilder<String>(
-            stream: Provider.of<ValidationBloc>(context).passwordStream,
-            builder: (_, snap) => TextField(
-              onChanged: Provider.of<ValidationBloc>(context).passwordChanged,
-              decoration: InputDecoration(errorText: snap.error),
-            ),
-          ),
-          StreamBuilder<String>(
-            stream: Provider.of<ValidationBloc>(context).confirmPasswordStream,
-            builder: (_, snap) => TextField(
-              onChanged:
-                  Provider.of<ValidationBloc>(context).confirmPasswordChanged,
-              decoration: InputDecoration(errorText: snap.error),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: StreamBuilder<bool>(
+          stream: context.read<ValidationBloc>().validationStream,
+          initialData: false,
+          builder: (context, snapshot) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                StreamBuilder<String>(
+                  stream: context.read<ValidationBloc>().emailStream,
+                  builder: (_, snap) => TextField(
+                    onChanged: context.read<ValidationBloc>().emailChanged,
+                    decoration: InputDecoration(
+                        errorText: snapshot.data ? snap.error : null),
+                  ),
+                ),
+                StreamBuilder<String>(
+                  stream: Provider.of<ValidationBloc>(context).passwordStream,
+                  builder: (_, snap) => TextField(
+                    onChanged: context.read<ValidationBloc>().passwordChanged,
+                    decoration: InputDecoration(
+                        errorText: snapshot.data ? snap.error : null),
+                  ),
+                ),
+                StreamBuilder<String>(
+                  stream: context.read<ValidationBloc>().confirmPasswordStream,
+                  builder: (_, snap) => TextField(
+                    onChanged:
+                        context.read<ValidationBloc>().confirmPasswordChanged,
+                    decoration: InputDecoration(
+                        errorText: snapshot.data ? snap.error : null),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () =>
+                        context.read<ValidationBloc>().updateValidationStatus(),
+                    child: Text('Submit'))
+              ],
+            );
+          },
+        ),
+      );
 }
