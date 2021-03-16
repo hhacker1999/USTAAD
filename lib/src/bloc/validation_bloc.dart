@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'package:rxdart/streams.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ValidationBloc {
   //Email RedgEx
@@ -12,20 +11,21 @@ class ValidationBloc {
   final BehaviorSubject<String> _passwordSubject = BehaviorSubject<String>();
   final BehaviorSubject<String> _confirmPasswordSubject =
       BehaviorSubject<String>();
-  final BehaviorSubject<bool> _shouldValidate = BehaviorSubject.seeded(false);
+
   //Inputs
   Function(String) get emailChanged => _emailSubject.add;
   Function(String) get passwordChanged => _passwordSubject.add;
   Function(String) get confirmPasswordChanged => _confirmPasswordSubject.add;
 
   //ValueStreams
-  ValueStream<String> get emailStream =>
+  Stream<String> get emailStream =>
       _emailSubject.transform(_emailTransformer());
-  ValueStream<String> get passwordStream =>
-      _passwordSubject.transform(_passwordTransformer());
-  ValueStream<String> get confirmPasswordStream =>
-      _confirmPasswordSubject.transform(_confirmPasswordTransformer());
-  ValueStream<bool> get validationStream => _shouldValidate;
+  Stream<String> get passwordStream =>
+      _passwordSubject.stream.transform(_passwordTransformer());
+  Stream<String> get confirmPasswordStream =>
+      _confirmPasswordSubject.stream.transform(_confirmPasswordTransformer());
+  Stream<bool> get buttonActive => Rx.combineLatest3(
+      emailStream, passwordStream, confirmPasswordStream, (a, b, c) => true);
 
   //StreamTransformers
   StreamTransformer _emailTransformer() {
@@ -59,15 +59,14 @@ class ValidationBloc {
   }
 
   //Methods
-  void updateValidationStatus() {
-    _shouldValidate.add(_shouldValidate.value ? false : true);
+  void submitClicked() {
+    print('nigga');
   }
 
   //Dispose
   void dispose() {
     _emailSubject.close();
     _passwordSubject.close();
-    _shouldValidate.close();
     _confirmPasswordSubject.close();
   }
 }
