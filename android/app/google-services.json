@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "593098815298",
+    "project_id": "ustaad-7dfe4",
+    "storage_bucket": "ustaad-7dfe4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593098815298:android:4175d5f6a80e6edfe5badb",
+        "android_client_info": {
+          "package_name": "com.ustaad.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593098815298-g251864ulh9t24emge5ktnrjba8t5fnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcB0dbEh4H2PoPSnfnSIWVKBFJ82KUQKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593098815298-g251864ulh9t24emge5ktnrjba8t5fnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
