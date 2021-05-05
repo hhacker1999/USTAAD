@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+
 @lazySingleton
 class AuthService {
   static const _key = "0dd286b6-8882-11eb-a9bc-0200cd936042";
@@ -10,21 +11,20 @@ class AuthService {
   String? _otp;
   Future<bool> requestOtp(String phoneNumber) async {
     _otp = _generateRandomString();
-    try {
-      var response = await http.get(
-          Uri.parse('https://2factor.in/API/V1/$_key/SMS/$phoneNumber/$_otp'));
-      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-      String? status = decodedResponse['status'];
-      if (status == 'success')
-        return true;
-      else
-        return false;
-    } catch (e) {
-      return false;
-    }
+
+    var response = await Dio()
+        .get('https://2factor.in/API/V1/$_key/SMS/$phoneNumber/$_otp');
+
+    String? status = response.data['Status'];
+    if (status == 'Success')
+      return true;
+    else
+      print('false');
+    return false;
   }
 
   bool confirmOtp(String otpEntered) {
+    print(_otp);
     if (_otp == otpEntered)
       return true;
     else
@@ -32,7 +32,7 @@ class AuthService {
   }
 
   String _generateRandomString() {
-    return List.generate(8, (index) => _chars[Random().nextInt(_chars.length)])
+    return List.generate(6, (index) => _chars[Random().nextInt(_chars.length)])
         .join();
   }
 }
