@@ -2,13 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:project/src/app/app_constants.dart';
+import 'package:project/src/app/app_navigator.dart';
 import 'package:project/src/app/locator.dart';
 import 'package:project/src/managers/auth_manager.dart';
-import 'package:project/src/views/homeview/homeview.dart';
 import 'package:rxdart/rxdart.dart';
 
 @lazySingleton
 class LoginViewModel {
+  final _navigator = locator<AppNavigator>();
   final _authManager = locator<AuthManager>();
   final _shouldEnterOtp = BehaviorSubject<bool>.seeded(false);
   final _mobileNumberInput = BehaviorSubject<String>();
@@ -32,8 +34,7 @@ class LoginViewModel {
     var result =
         await _authManager.autoSignIn(credential, mobileNumberStream.value!);
     if (result == true) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeView()));
+      _navigator.navigateAndPop(AppConstants.homeView);
     } else {
       _isLoading.sink.add(false);
     }
@@ -44,8 +45,7 @@ class LoginViewModel {
     var result = await _authManager.otpSignIn(
         _verId, smsOtpStream.value!, mobileNumberStream.value!);
     if (result == true) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeView()));
+      _navigator.navigateAndPop(AppConstants.homeView);
     }
   }
 
@@ -60,6 +60,7 @@ class LoginViewModel {
         codeSent: (a, c) {
           _verId = a;
           _resendToken = c!;
+          _isLoading.sink.add(false);
           _shouldEnterOtp.sink.add(true);
         },
         codeAutoRetrievalTimeout: (a) {});
@@ -71,5 +72,6 @@ class LoginViewModel {
     _smsOtpInput.close();
     _isLoading.close();
     _shouldEnterOtp.close();
+    print('diposed all streams');
   }
 }
