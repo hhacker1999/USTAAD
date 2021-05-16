@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "593098815298-l4k03a2bhgnf1i3o9eub9valjpu358fp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ustaad.app",
+            "certificate_hash": "cea7ec94d1c0bbfca116ccfe3646721776eb151a"
+          }
+        },
+        {
           "client_id": "593098815298-g251864ulh9t24emge5ktnrjba8t5fnn.apps.googleusercontent.com",
           "client_type": 3
         }

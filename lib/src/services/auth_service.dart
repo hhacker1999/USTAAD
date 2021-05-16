@@ -1,38 +1,31 @@
-import 'dart:convert';
-import 'dart:math';
-import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class AuthService {
-  static const _key = "0dd286b6-8882-11eb-a9bc-0200cd936042";
-  static const _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  String? _otp;
-  Future<bool> requestOtp(String phoneNumber) async {
-    _otp = _generateRandomString();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-    var response = await Dio()
-        .get('https://2factor.in/API/V1/$_key/SMS/$phoneNumber/$_otp');
-
-    String? status = response.data['Status'];
-    if (status == 'Success')
+  Future<bool> signInWithAuthCredentials(PhoneAuthCredential credential) async {
+    try {
+      await _auth.signInWithCredential(credential);
       return true;
-    else
-      print('false');
-    return false;
-  }
-
-  bool confirmOtp(String otpEntered) {
-    print(_otp);
-    if (_otp == otpEntered)
-      return true;
-    else
+    } catch (e) {
       return false;
+    }
   }
 
-  String _generateRandomString() {
-    return List.generate(6, (index) => _chars[Random().nextInt(_chars.length)])
-        .join();
+  Future<bool> signInWithSmsCode(String verificationId, String smsCode) async {
+    PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
+    try {
+      await signInWithAuthCredentials(_credential);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
