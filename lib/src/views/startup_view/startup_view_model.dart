@@ -4,7 +4,6 @@ import 'package:project/src/app/app_constants.dart';
 import 'package:project/src/app/app_navigator.dart';
 import 'package:project/src/app/locator.dart';
 
-
 @lazySingleton
 class StartUpViewModel {
   final _navigator = locator<AppNavigator>();
