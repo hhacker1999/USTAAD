@@ -35,6 +35,9 @@ class LoginViewModel {
         await _authManager.autoSignIn(credential, mobileNumberStream.value!);
     if (result == true) {
       _navigator.navigateAndPop(AppConstants.homeView);
+      locator.unregister<LoginViewModel>(
+        disposingFunction: (c) => c.dispose(),
+      );
     } else {
       _isLoading.sink.add(false);
     }
@@ -46,6 +49,9 @@ class LoginViewModel {
         _verId, smsOtpStream.value!, mobileNumberStream.value!);
     if (result == true) {
       _navigator.navigateAndPop(AppConstants.homeView);
+      locator.unregister<LoginViewModel>(
+        disposingFunction: (c) => c.dispose(),
+      );
     }
   }
 
@@ -66,12 +72,11 @@ class LoginViewModel {
         codeAutoRetrievalTimeout: (a) {});
   }
 
-  @disposeMethod
   void dispose() {
     _mobileNumberInput.close();
     _smsOtpInput.close();
     _isLoading.close();
     _shouldEnterOtp.close();
-    print('diposed all streams');
+    print('disposed all streams');
   }
 }

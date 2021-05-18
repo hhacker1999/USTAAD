@@ -23,8 +23,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i4.AuthManager>(() => _i4.AuthManager());
   gh.lazySingleton<_i5.AuthService>(() => _i5.AuthService());
   gh.lazySingleton<_i6.FirebaseService>(() => _i6.FirebaseService());
-  gh.lazySingleton<_i7.LoginViewModel>(() => _i7.LoginViewModel(),
-      dispose: (i) => i.dispose());
+  gh.lazySingleton<_i7.LoginViewModel>(() => _i7.LoginViewModel());
   gh.lazySingleton<_i8.StartUpViewModel>(() => _i8.StartUpViewModel());
   return get;
 }
