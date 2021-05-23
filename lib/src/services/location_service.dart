@@ -16,9 +16,20 @@ class LocationService {
       return true;
   }
 
-  Future<void> getLocationPermission() async =>
+  Future<void> getLocationPermission() async {
+    try {
       await Geolocator.requestPermission();
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  Future<Position> getCurrentLocation() async =>
-      await Geolocator.getCurrentPosition();
+  Future<Position> getCurrentLocation() async {
+    try {
+      return await Geolocator.getCurrentPosition(
+          timeLimit: const Duration(seconds: 15));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
