@@ -18,7 +18,8 @@ class FirebaseService {
       await _instance
           .collection('users')
           .doc(phoneNumber)
-          .set({'userPhone': phoneNumber});
+          .set({'userPhone': phoneNumber,
+          'userLocation': GeoPoint(12,21)});
       return true;
     } catch (e) {
       return false;

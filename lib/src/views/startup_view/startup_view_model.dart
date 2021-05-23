@@ -11,7 +11,6 @@ class StartUpViewModel {
   Future operations() async {
     await Firebase.initializeApp();
     await Future.delayed(Duration(seconds: 10));
-    print('Done operations');
     _navigator.navigateAndPop(AppConstants.loginView);
   }
 }

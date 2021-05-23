@@ -11,7 +11,7 @@ import '../managers/auth_manager.dart' as _i4;
 import '../services/auth_service.dart' as _i5;
 import '../services/firebase_service.dart' as _i6;
 import '../services/location_service.dart' as _i7;
-import '../views/login_view/login_view_model.dart' as _i8;
+import '../views/login_view/login_view_model/login_view_model.dart' as _i8;
 import '../views/startup_view/startup_view_model.dart' as _i9;
 import 'app_navigator.dart' as _i3; // ignore_for_file: unnecessary_lambdas
 
